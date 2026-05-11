@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react"
 import { ContactCard } from "../components/ContactCard";
 import { Link } from "react-router-dom";
+import useGlobalReducer from "../hooks/useGlobalReducer";
 
 
 export const Contact = () => {
 
-  const [user, setUsers] = useState([])
-  const Api = "https://playground.4geeks.com/contact/agendas/Valeria22"
+  const { store, dispatch } = useGlobalReducer()
+  const Api = "https://playground.4geeks.com/contact/agendas/Valeria111"
   const [editForm, setEditForm] = useState({
       name: "",
       email: "",
@@ -18,14 +19,14 @@ export const Contact = () => {
     let result = await fetch(`${Api}/contacts`)
     let data = await result.json()
 
-    setUsers(data.contacts)
+    dispatch({ type:"get_contacts", payload: data.contacts })
   }
 
   async function deleteContact(id) {
     await fetch(`${Api}/contacts/${id}`, {
       method: "DELETE"
     })
-    getContacts()
+    dispatch({type: "delete_contact", payload: id })
   }
 
   async function editContact(id) {
@@ -34,7 +35,8 @@ export const Contact = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(editForm)
     })
-    getContacts()
+    await getContacts()
+    
   }
 
 
@@ -55,15 +57,17 @@ export const Contact = () => {
       <h1>Contactos</h1>
 
       <div className="d-flex flex-wrap gap-3 mt-5 justify-content-center">
-        {user.map((contacto, index) => (
+        {store.contacts.map((contacto, index) => (
 
           <div key={index}>
 
             <ContactCard
               contacto={contacto}
               onDelete={deleteContact}
+              onEdit={editContact}
+              editForm={editForm}
+              setEditForm={setEditForm}
             />
-
           </div>
         ))}
       </div>

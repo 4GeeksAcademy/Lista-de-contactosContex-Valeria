@@ -1,4 +1,10 @@
+body {
+    background-image: url("https://plus.unsplash.com/premium_photo-1773501126593-ee0e4e6bdedb?q=80&w=751&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+    background-size: cover;
+    background-position: center;
+
+}
+
 .card {
-    width: 18rem;
-    
+    width: 14rem;
 }
